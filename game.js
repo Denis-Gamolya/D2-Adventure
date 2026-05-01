@@ -5,7 +5,8 @@ class WorldSpawn extends AdventureScene {
 
     preload() {
         // load assets
-        this.load.path = './assets/'
+        this.load.path = './Assets/'
+
         this.load.image('spawn', 'Spawn.png')
         this.load.image('villagers', 'Villagers.png')
         this.load.image('tradingCenter', 'Trading_Center.png')
