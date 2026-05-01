@@ -15,6 +15,7 @@ class WorldSpawn extends AdventureScene {
         this.load.image('mine', 'Mine.png')
         this.load.image('dock', 'Dock.png')
         this.load.image('inside', 'Inside.png')
+        this.load.image('hidden', 'Hidden.png')
     }
     onEnter() {
 
@@ -331,7 +332,7 @@ class Base extends AdventureScene {
             });
 
         // go inside base
-        this.add.text(this.w * 0.35, this.w * 0.22, "Go inside")
+        this.add.text(this.w * 0.32, this.w * 0.26, "Go inside")
             .setFontSize(this.s * 2)
             .setInteractive()
             .on('pointerover', () => {
@@ -342,7 +343,7 @@ class Base extends AdventureScene {
             });
 
          // go to the dock
-        this.add.text(this.w * 0.4, this.w * 0.5, "Go to the dock")
+        this.add.text(this.w * 0.05, this.w * 0.3, "Go to the dock")
             .setFontSize(this.s * 2)
             .setInteractive()
             .on('pointerover', () => {
@@ -352,8 +353,8 @@ class Base extends AdventureScene {
                 this.gotoScene('Dock');
             });
 
-         // go to the dock
-        this.add.text(this.w * 0.4, this.w * 0.5, "Enter the mine")
+         // go to the mine
+        this.add.text(this.w * 0.5, this.w * 0.35, "Enter the mine")
             .setFontSize(this.s * 2)
             .setInteractive()
             .on('pointerover', () => {
@@ -373,29 +374,115 @@ class InsideBase extends AdventureScene {
     }
     onEnter() {
         this.addBackground('inside');
+
+        // go back outside
+        this.add.text(this.w * 0.35, this.w * 0.5, "Go back")
+            .setFontSize(this.s * 2)
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage("Go back outside");
+            })
+            .on('pointerdown', () => {
+                this.gotoScene('Base');
+            });
+
+    let key = this.add.text(this.w * 0.4, this.w * 0.3, "Grab the axe")
+            .setFontSize(this.s * 2)
+            .setStyle({ fill: '#2fdac6' })
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage("Punch the item frame")
+            })
+            .on('pointerdown', () => {
+                this.showMessage("You pick up the diamond axe");
+                this.gainItem('diamond axe');
+                this.tweens.add({
+                    targets: key,
+                    y: `-=${2 * this.s}`,
+                    alpha: { from: 1, to: 0 },
+                    duration: 500,
+                    onComplete: () => key.destroy()
+                });
+            })
+
     }
 }
 
 class Mine extends AdventureScene {
     constructor() {
-        super("Mine", "You are in the mine");
+        super("Mine", "You are in the mine. How strange.");
     }
     onEnter() {
         this.addBackground('mine');
+
+        // go back to the base
+        this.add.text(this.w * 0.35, this.w * 0.5, "Go back")
+            .setFontSize(this.s * 2)
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage("Go back outside");
+            })
+            .on('pointerdown', () => {
+                this.gotoScene('Base');
+            });
     }
 }
 
 class Dock extends AdventureScene {
     constructor() {
-        super("Dock", "You are at the dock");
+        super("Dock", "You are at the dock. You spot a hidden tunnel.");
     }
     onEnter() {
         this.addBackground('dock');
+
+        // go back to the base
+        this.add.text(this.w * 0.35, this.w * 0.5, "Go back")
+            .setFontSize(this.s * 2)
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage("Go back outside");
+            })
+            .on('pointerdown', () => {
+                this.gotoScene('Base');
+            });
+
+
+        // enter HiddenCave
+        this.add.text(this.w * 0.35, this.w * 0.5, "Enter the hidden cave")
+            .setFontSize(this.s * 2)
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage("Enter the hidden cave");
+            })
+            .on('pointerdown', () => {
+                this.gotoScene('HiddenCave');
+            });
+
+
     }
 }
 
 // hidden scene where you find enderman. Kill for pearl
+class HiddenCave extends AdventureScene {
+    constructor() {
+        super("HiddenCave", "You are in a hidden cave. You spot a mysterious figure.");
+    }
+    onEnter() {
+        this.addBackground('hidden');
 
+        // go back to the dock
+        this.add.text(this.w * 0.35, this.w * 0.5, "Go back")
+            .setFontSize(this.s * 2)
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage("Go back to the dock");
+            })
+            .on('pointerdown', () => {
+                this.gotoScene('Dock');
+            });
+
+    }
+}
 
 class Intro extends Phaser.Scene {  
     constructor() {
@@ -432,7 +519,7 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    scene: [Intro, WorldSpawn, Villagers, TradingCenter, Farm, ViewBase, Base, InsideBase, Dock, Mine, Nether, Outro],
+    scene: [Intro, WorldSpawn, Villagers, TradingCenter, Farm, ViewBase, Base, InsideBase, Dock, Mine, HiddenCave, Nether, Outro],
     title: "Adventure Game",
 });
 
