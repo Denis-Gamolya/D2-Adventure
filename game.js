@@ -22,9 +22,9 @@ class WorldSpawn extends AdventureScene {
     }
     onEnter() {
 
-// change to find flint in chest
         this.addBackground('spawn');
 
+        // nether portal requires Iron ingot and flint
         let portal = this.add.text(this.w * 0.57, this.w * 0.2, "Nether Portal")
             .setFontSize(this.s * 2)
             .setStyle({ fill: '#c10606' })
@@ -48,16 +48,17 @@ class WorldSpawn extends AdventureScene {
                 }
             });
 
+        // loot chest for 64 emeralds
         let key = this.add.text(this.w * 0.4, this.w * 0.3, "Search the chests")
             .setFontSize(this.s * 2)
             .setStyle({ fill: '#2fdac6' })
             .setInteractive()
             .on('pointerover', () => {
-                this.showMessage("There are so many items")
+                this.showMessage("Suprisingly not much in them")
             })
             .on('pointerdown', () => {
-                this.showMessage("You pick up the flint and steel");
-                this.gainItem('flint and steel');
+                this.showMessage("You find 64 emeralds");
+                this.gainItem('64 emeralds');
                 this.tweens.add({
                     targets: key,
                     y: `-=${2 * this.s}`,
@@ -67,6 +68,7 @@ class WorldSpawn extends AdventureScene {
                 });
             })
 
+        // go to Villagers
         this.add.text(this.w * 0.1, this.w * 0.15, "Visit the villagers")
             .setFontSize(this.s * 2)
             .setInteractive()
@@ -77,6 +79,7 @@ class WorldSpawn extends AdventureScene {
                 this.gotoScene('Villagers');
             })
 
+        // go to Base
         this.add.text(this.w * 0.04, this.w * 0.33, "Turn around")
             .setFontSize(this.s * 2)
             .setStyle({ fill: '#000000' })
@@ -110,6 +113,7 @@ class Villagers extends AdventureScene {
             .on('pointerdown', () => {
                 this.gotoScene('WorldSpawn');
             });
+
         // go to trading center
         this.add.text(this.w * 0.2, this.w * 0.18, "Trading center")
             .setFontSize(this.s * 2)
@@ -120,6 +124,7 @@ class Villagers extends AdventureScene {
             .on('pointerdown', () => {
                 this.gotoScene('TradingCenter');
             });
+
         // go to farm
         this.add.text(this.w * 0.52, this.w * 0.18, "Farm")
             .setFontSize(this.s * 2)
@@ -130,15 +135,9 @@ class Villagers extends AdventureScene {
             .on('pointerdown', () => {
                 this.gotoScene('Farm');
             });
-
     }
 }
 
-// flint and steel light nether portal
-// can go in and up to to nether roof
-// read sign that says you need pearl
-// if you have pearl you can use
-// reach the nether roof and end.
 class Nether extends AdventureScene {
     constructor() {
         super("Nether", "The Nether")
@@ -148,6 +147,7 @@ class Nether extends AdventureScene {
     }
 
 }
+
 // ladder where you need pearl
 class NetherClimb extends AdventureScene {
     constructor() {
@@ -157,7 +157,8 @@ class NetherClimb extends AdventureScene {
         this.addBackground('nether_climb');
     }
 }
-// bees on top of nether roof
+
+// bees on top of nether roof -- win
 class NetherRoof extends AdventureScene {
     constructor() {
         super("NetherRoof", "The Nether Roof")
@@ -179,6 +180,7 @@ class NetherRoof extends AdventureScene {
             .on('pointerdown', () => this.gotoScene('outro'));
     }
 }
+
 class TradingCenter extends AdventureScene {
     constructor() {
         super("TradingCenter", "Trading Center")
@@ -186,11 +188,9 @@ class TradingCenter extends AdventureScene {
 
     onEnter() {
 
-        // trade for some iron
         this.addBackground('tradingCenter');
 
-
-        // return to world spawn
+        // if you have 64 emeralds, exchange for iron ingot
         let trade = this.add.text(this.w * 0.33, this.w * 0.37, "Trade")
             .setFontSize(this.s * 2)
             .setStyle({ fill: '#1eff00' })
@@ -201,8 +201,8 @@ class TradingCenter extends AdventureScene {
             .on('pointerdown', () => {
                 if (this.hasItem("64 emeralds")) {
                     this.loseItem("64 emeralds");
-                    this.showMessage("You trade for a diamond axe");
-                    this.gainItem('Diamond Axe');
+                    this.showMessage("You trade for some iron");
+                    this.gainItem('Iron ingot');
                     this.tweens.add({
                         targets: trade,
                         y: `-=${2 * this.s}`,
@@ -217,7 +217,7 @@ class TradingCenter extends AdventureScene {
                 }
             });
 
-        // check chest
+        // aquire flint
         let emeralds =this.add.text(this.w * 0.53, this.w * 0.4, "Loot the chest")
             .setFontSize(this.s * 2)
             .setStyle({ fill: '#1eff00' })
@@ -226,8 +226,8 @@ class TradingCenter extends AdventureScene {
                 this.showMessage("Loot the chest")
             })
             .on('pointerdown', () => {
-                this.showMessage("You find some emeralds");
-                this.gainItem('64 emeralds');
+                this.showMessage("You find some flint");
+                this.gainItem('flint');
                 this.tweens.add({
                     targets: emeralds,
                     y: `-=${2 * this.s}`,
@@ -239,7 +239,7 @@ class TradingCenter extends AdventureScene {
 
 
 
-        // go to farm
+        // go back
         this.add.text(this.w * 0.35, this.w * 0.5, "Go back")
             .setFontSize(this.s * 2)
             .setInteractive()
@@ -247,7 +247,7 @@ class TradingCenter extends AdventureScene {
                 this.showMessage("Go back to spawn");
             })
             .on('pointerdown', () => {
-                this.gotoScene('WorldSpawn');
+                this.gotoScene('Villagers');
             });
 
     }
@@ -262,7 +262,7 @@ class Farm extends AdventureScene {
     onEnter() {
         this.addBackground('farm');
 
-
+        // interactable text that does nothing
         let text = this.add.text(this.w * 0.25, this.w * 0.06, "Everything is working smoothly")
             .setFontSize(this.s * 2)
             .setStyle({ fill: '#000000' })
@@ -279,7 +279,7 @@ class Farm extends AdventureScene {
                     });
             })
 
-            // go back to spawn
+        // go back
         this.add.text(this.w * 0.35, this.w * 0.5, "Go back")
             .setFontSize(this.s * 2)
             .setStyle({ fill: '#3bd3fd' })
@@ -288,7 +288,7 @@ class Farm extends AdventureScene {
                 this.showMessage("Go back to spawn");
             })
             .on('pointerdown', () => {
-                this.gotoScene('WorldSpawn');
+                this.gotoScene('Villagers');
             });
 
 
@@ -305,6 +305,7 @@ class ViewBase extends AdventureScene {
 
         this.addBackground('view_base');
 
+        // go to Base
         this.add.text(this.w * 0.35, this.w * 0.22, "Approach the base")
             .setFontSize(this.s * 2)
             .setStyle({ fill: '#000000' })
@@ -316,8 +317,8 @@ class ViewBase extends AdventureScene {
                 this.gotoScene('Base');
             })
 
-
-            this.add.text(this.w * 0.4, this.w * 0.5, "go back")
+            // go back
+        this.add.text(this.w * 0.4, this.w * 0.5, "go back")
             .setFontSize(this.s * 2)
             .setStyle({ fill: '#000000' })
             .setInteractive()
@@ -327,13 +328,9 @@ class ViewBase extends AdventureScene {
             .on('pointerdown', () => {
                 this.gotoScene('WorldSpawn');
             })
-
-
         }
 }
 
-// get diamond axe from the base
-// go to dock to find hidden area with enderman and pearl
 class Base extends AdventureScene {
     constructor() {
         super("Base", "Theres a mine and dock by the base");
@@ -388,8 +385,6 @@ class Base extends AdventureScene {
 }
 }
 
-
-// can collect diamond axe from inside
 class InsideBase extends AdventureScene {
     constructor() {
         super("InsideBase", "You are inside the base");
@@ -408,7 +403,8 @@ class InsideBase extends AdventureScene {
                 this.gotoScene('Base');
             });
 
-    let key = this.add.text(this.w * 0.4, this.w * 0.3, "Grab the axe")
+    // acquire diamond axe
+    let key = this.add.text(this.w * 0.4, this.w * 0.29, "Grab the axe")
             .setFontSize(this.s * 2)
             .setStyle({ fill: '#2fdac6' })
             .setInteractive()
@@ -417,7 +413,7 @@ class InsideBase extends AdventureScene {
             })
             .on('pointerdown', () => {
                 this.showMessage("You pick up the diamond axe");
-                this.gainItem('diamond axe');
+                this.gainItem('Diamond axe');
                 this.tweens.add({
                     targets: key,
                     y: `-=${2 * this.s}`,
@@ -426,7 +422,6 @@ class InsideBase extends AdventureScene {
                     onComplete: () => key.destroy()
                 });
             })
-
     }
 }
 
@@ -469,7 +464,7 @@ class Dock extends AdventureScene {
 
 
         // enter HiddenCave
-        this.add.text(this.w * 0.35, this.w * 0.5, "Enter the hidden cave")
+        this.add.text(this.w * 0.41, this.w * 0.23, "Enter the hidden cave")
             .setFontSize(this.s * 2)
             .setInteractive()
             .on('pointerover', () => {
@@ -483,10 +478,9 @@ class Dock extends AdventureScene {
     }
 }
 
-// get pearl from enderman
 class HiddenCave extends AdventureScene {
     constructor() {
-        super("HiddenCave", "You are in a hidden cave. You spot a mysterious figure.");
+        super("HiddenCave", "There's an enderman stuck on a boat.");
     }
     onEnter() {
         this.addBackground('hidden');
@@ -500,6 +494,32 @@ class HiddenCave extends AdventureScene {
             })
             .on('pointerdown', () => {
                 this.gotoScene('Dock');
+            });
+
+        // acquire ender pearl if you have diamond axe
+        let pearl = this.add.text(this.w * 0.33, this.w * 0.37, "Attack the enderman")
+            .setFontSize(this.s * 2)
+            .setStyle({ fill: '#1eff00' })
+            .setInteractive()
+            .on('pointerover', () => {
+                this.showMessage("Hit the enderman");
+            })
+            .on('pointerdown', () => {
+                if (this.hasItem("Diamond axe")) {
+                    this.showMessage("You collect an ender pearl");
+                    this.gainItem('Ender Pearl');
+                    this.tweens.add({
+                        targets: pearl,
+                        y: `-=${2 * this.s}`,
+                        alpha: { from: 1, to: 0 },
+                        duration: 500,
+                        onComplete: () => pearl.destroy()
+                    });
+                }
+                else {
+                    this.showMessage("You try hitting the enderman with your first but it doesn't work");
+                    this.shake(pearl);
+                }
             });
 
     }
