@@ -72,9 +72,9 @@ class AdventureScene extends Phaser.Scene {
         this.inventoryTexts = [];
         this.updateInventory();
 
-        this.add.text(this.w-3*this.s, this.h-3*this.s, "📺")
+        this.add.text(this.w - 3 * this.s, this.h - 3 * this.s, "📺")
             .setStyle({ fontSize: `${2 * this.s}px` })
-            .setInteractive({useHandCursor: true})
+            .setInteractive({ useHandCursor: true })
             .on('pointerover', () => this.showMessage('Fullscreen?'))
             .on('pointerdown', () => {
                 if (this.scale.isFullscreen) {
@@ -229,5 +229,35 @@ class AdventureScene extends Phaser.Scene {
      */
     onEnter() {
         console.warn('This AdventureScene did not implement onEnter():', this.constructor.name);
+    }
+
+
+    // Helper to load the background images and scale them to fit
+    addBackground(key) {
+
+
+        const bg = this.add.image(0, 0, key).setOrigin(0, 0).setDepth(-10);
+        const imageW = this.w * 0.75;
+        const imageH = this.h;
+
+        const scale = Math.max(imageW / bg.width, imageH / bg.height);
+
+        bg.setScale(scale);
+        bg.x = (imageW - bg.displayWidth) / 2;
+        bg.y = (imageH - bg.displayHeight) / 2;
+
+        return bg;
+    }
+
+    // shake effect when you attempt an action you cannot do yet
+    shake(target) {
+        this.tweens.add({
+            targets: target,
+            x: '+=' + this.s,
+            repeat: 2,
+            yoyo: true,
+            ease: 'Sine.inOut',
+            duration: 100
+        });
     }
 }
