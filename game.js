@@ -16,6 +16,9 @@ class WorldSpawn extends AdventureScene {
         this.load.image('dock', 'Dock.png')
         this.load.image('inside', 'Inside.png')
         this.load.image('hidden', 'Hidden.png')
+        this.load.image('nether', 'Nether.png')
+        this.load.image('nether_climb', 'Nether_Climb.png')
+        this.load.image('nether_roof', 'Nether_Roof.png')
     }
     onEnter() {
 
@@ -140,8 +143,27 @@ class Nether extends AdventureScene {
     constructor() {
         super("Nether", "The Nether")
     }
-
     onEnter() {
+        this.addBackground('nether');
+    }
+
+}
+// ladder where you need pearl
+class NetherClimb extends AdventureScene {
+    constructor() {
+        super("NetherClimb", "The Nether Climb")
+    }
+    onEnter() {
+        this.addBackground('nether_climb');
+    }
+}
+// bees on top of nether roof
+class NetherRoof extends AdventureScene {
+    constructor() {
+        super("NetherRoof", "The Nether Roof")
+    }
+        onEnter() {
+        this.addBackground('nether_roof');
         let finish = this.add.text(this.w * 0.6, this.w * 0.2, '(finish the game)')
             .setInteractive()
             .on('pointerover', () => {
@@ -427,7 +449,6 @@ class Mine extends AdventureScene {
             });
     }
 }
-
 class Dock extends AdventureScene {
     constructor() {
         super("Dock", "You are at the dock. You spot a hidden tunnel.");
@@ -462,7 +483,7 @@ class Dock extends AdventureScene {
     }
 }
 
-// hidden scene where you find enderman. Kill for pearl
+// get pearl from enderman
 class HiddenCave extends AdventureScene {
     constructor() {
         super("HiddenCave", "You are in a hidden cave. You spot a mysterious figure.");
@@ -519,7 +540,8 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    scene: [Intro, WorldSpawn, Villagers, TradingCenter, Farm, ViewBase, Base, InsideBase, Dock, Mine, HiddenCave, Nether, Outro],
+    scene: [Intro, WorldSpawn, Villagers, TradingCenter, Farm, ViewBase, Base, 
+            InsideBase, Dock, Mine, HiddenCave, Nether, NetherClimb, NetherRoof, Outro],
     title: "Adventure Game",
 });
 
