@@ -654,7 +654,9 @@ class Intro extends Phaser.Scene {
         this.add.text(50, 50, "You desire honey (in minecraft).").setFontSize(40);
         this.add.text(50, 100, "Unfortunately, all bees in the area have been forcefully relocated.").setFontSize(40);
         this.add.text(50, 150, "Find your way to the Nether roof for some honey.").setFontSize(40);
-        this.add.text(50, 200, "Click anywhere to begin.").setFontSize(20);
+        this.add.text(50, 300, "Click anywhere to begin.").setFontSize(20);
+        this.add.text(50, 200, "In order to reach the Nether you must acquire iron and flint to light the portal").setFontSize(20);
+        this.add.text(50, 250, "To reach the Nether roof you need to find an ender pearl").setFontSize(20);
         this.input.on('pointerdown', () => {
             this.cameras.main.fade(1000, 0, 0, 0);
             this.time.delayedCall(1000, () => this.scene.start('WorldSpawn'));
@@ -670,7 +672,6 @@ class Outro extends Phaser.Scene {
         this.add.text(50, 50, "Bathe in the honey").setFontSize(50);
         this.add.text(50, 100, "Click anywhere to restart.").setFontSize(20);
         this.input.on('pointerdown', () => this.scene.start('WorldSpawn'));
-
     }
 }
 
